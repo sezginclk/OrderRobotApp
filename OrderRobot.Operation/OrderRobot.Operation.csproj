@@ -8,6 +8,11 @@
     <PackageReference Include="DotNetCore.CAP" Version="3.1.2" />
     <PackageReference Include="DotNetCore.CAP.InMemoryStorage" Version="3.1.2" />
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="3.1.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OrderRobot.Data.Model\OrderRobot.Data.Model.csproj" />
   </ItemGroup>
 
 

@@ -6,8 +6,6 @@
 
   <ItemGroup>
     <Folder Include="DataTransferObjects\Dto\" />
-    <Folder Include="DataTransferObjects\Response\" />
-    <Folder Include="DataTransferObjects\Request\" />
   </ItemGroup>
 
   <ItemGroup>
