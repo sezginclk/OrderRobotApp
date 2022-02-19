@@ -22,7 +22,6 @@ namespace OrderRobot.Operation
             services.AddScoped<IOperationManager, OperationManager>();
             services.AddScoped<IRobotTaskDal, RobotTaskDal>();
             services.AddScoped<IOperationDal, OperationDal>();
-            services.AddScoped<IOperationManager, OperationManager>();
             services.AddScoped<IUnitOfWork, EFUnitOfWork>();
             services.AddScoped<MainContext>();
 

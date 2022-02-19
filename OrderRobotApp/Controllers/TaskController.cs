@@ -13,22 +13,21 @@ using static OrderRobot.Core.Constants;
 
 namespace OrderRobotApp.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
+    [Produces("application/json")]
+    [Route("api/Task")]
     public class TaskController : ControllerBase
     {
-        private readonly ILogger<TaskController> _logger;
         private readonly ICapPublisher _capBus;
         private readonly IRobotTaskManager _robotTaskManager;
 
-        public TaskController(ILogger<TaskController> logger, ICapPublisher capBus, IRobotTaskManager robotTaskManager)
+        public TaskController( ICapPublisher capBus, IRobotTaskManager robotTaskManager)
         {
-            _logger = logger;
             _capBus = capBus;
             _robotTaskManager = robotTaskManager;
         }
 
-        [HttpPost("Create")]
+        [Route("Create")]
+        [HttpPost]
         [SwaggerOperation(Summary = "Task Yaratma İşlemi", Description = "Task Yaratma İşlemi için kullanılır.")]
         public BaseResponse Create(TaskAddUpdateRequest request)
         {
@@ -51,7 +50,7 @@ namespace OrderRobotApp.Controllers
         [Route("Update")]
         [HttpPatch]
         [SwaggerOperation(Summary = "task güncelleme işlemi", Description = "task güncelleme işlemi için kullanılır")]
-        public TaskResponse Update([FromBody] TaskAddUpdateRequest request)
+        public TaskResponse Update(TaskAddUpdateRequest request)
         {
             TaskResponse result = _robotTaskManager.Update(request);
             return result;
@@ -60,7 +59,7 @@ namespace OrderRobotApp.Controllers
         [Route("Delete")]
         [HttpDelete]
         [SwaggerOperation(Summary = "task silme işlemi", Description = "task silme işlemi için kullanılır.")]
-        public BaseResponse Delete([FromBody] int RobotTaskId)
+        public BaseResponse Delete(int RobotTaskId)
         {
             BaseResponse result = _robotTaskManager.Delete(RobotTaskId);
             return result;
