@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OrderRobot.Data.Model\OrderRobot.Data.Model.csproj" />
+    <ProjectReference Include="..\OrderRobot.Data\OrderRobot.Data.csproj" />
   </ItemGroup>
 
 </Project>

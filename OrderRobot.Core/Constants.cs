@@ -19,9 +19,9 @@ namespace OrderRobot.Core
 
         public static Dictionary<int, string> ErrorCodeData = new Dictionary<int, string>
         {
-            {(int)ERRORCODES.SUCCESS,"İşlem Başarılı." },
+            {(int)ERRORCODES.SUCCESS,"İşlem Başarılı. Task Oluşturuldu." },
             {(int)ERRORCODES.SYSTEMERROR,"Sistemde Hata Oluştu!" },
-            {(int)ERRORCODES.TASKFOUND,"Görev bulunamadı!" },
+            {(int)ERRORCODES.TASKFOUND,"Task bulunamadı!" },
             {(int)ERRORCODES.LOCATIONNOTFOUND,"Lokasyon Bilgisi bulunamadı!" }
         };
 

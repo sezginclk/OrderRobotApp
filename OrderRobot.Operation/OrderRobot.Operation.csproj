@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OrderRobot.Data.Model\OrderRobot.Data.Model.csproj" />
+    <ProjectReference Include="..\OrderRobot.Service\OrderRobot.Service.csproj" />
   </ItemGroup>
 
 

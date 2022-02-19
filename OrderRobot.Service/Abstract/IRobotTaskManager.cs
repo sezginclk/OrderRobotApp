@@ -6,10 +6,10 @@ using System.Text;
 
 namespace OrderRobot.Service.Abstract
 {
-    public interface ITaskManager
+    public interface IRobotTaskManager
     {
-        BaseResponse Add(TaskRequest request);
-        BaseResponse Update(TaskRequest request);
-        BaseResponse Delete(int RobotoTaskId);
+        TaskResponse Add(TaskAddUpdateRequest request);
+        TaskResponse Update(TaskAddUpdateRequest request);
+        BaseResponse Delete(int RobotTaskId);
     }
 }

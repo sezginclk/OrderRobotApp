@@ -4,9 +4,10 @@ using System.Text;
 
 namespace OrderRobot.Data.Model.DataTransferObjects.Request
 {
-    public class TaskRequest
+    public class TaskAddUpdateRequest
     {
+        public int RobotTaskId { get; set; }
         public int LocationCode { get; set; }
-        public int Unity { get; set; }
+        public int Unit { get; set; }
     }
 }

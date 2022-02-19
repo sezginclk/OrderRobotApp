@@ -12,28 +12,62 @@ using System.Text;
 
 namespace OrderRobot.Service.Concrete
 {
-    public class OperationManager : IOperationManager
+    public class RobotTaskManager : IRobotTaskManager
     {
-        readonly IOperationDal _operationDal;
+        readonly IRobotTaskDal _robotTaskDal;
         readonly IUnitOfWork _unitOfWork;
         readonly MainContext _pbookContext;
 
-        public OperationManager(IOperationDal operationDal, IUnitOfWork unitOfWork, MainContext pbookContext)
+        public RobotTaskManager(IRobotTaskDal robotTaskDal, IUnitOfWork unitOfWork, MainContext pbookContext)
         {
-            _operationDal = operationDal;
+            _robotTaskDal = robotTaskDal;
             _unitOfWork = unitOfWork;
             _pbookContext = pbookContext;
         }
 
-        public BaseResponse Add(OperationAddUpdateRequest request)
+
+        public TaskResponse Add(TaskAddUpdateRequest request)
         {
-            BaseResponse response = new BaseResponse();
+            TaskResponse response = new TaskResponse();
 
             try
             {
-                //çalışmaya başlamak için işleme alındığı bilgisi verilir.
-                Operation task = new Operation { RobotTaskId = request.RobotTaskId, Status = Core.Constants.OperationStatus.Initial };
-                _operationDal.Add(task);
+                RobotTask task = new RobotTask { LocationCode = request.LocationCode, Unit = request.Unit };
+                _robotTaskDal.Add(task);
+                int result = _unitOfWork.SaveChanges();
+                if (result < 1)
+                {
+                    //işlem sırasında hata olursa exceptiona atmayabilir.
+                    response.SetErrorToResponse(Core.Constants.ERRORCODES.SYSTEMERROR);
+                    return response;
+                }
+                response.RobotTaskId = task.RobotTaskId;
+
+
+                //response içerisine başarılı kodu ve mesajı aktarılıyor
+                response.SetErrorToResponse(Core.Constants.ERRORCODES.SUCCESS);
+                return response;
+            }
+            catch (Exception)
+            {
+                //response içerisine işlem sırasında hata olduğu kodu ve mesajı aktarılıyor
+                response.SetErrorToResponse(Core.Constants.ERRORCODES.SYSTEMERROR);
+                return response;
+            }
+
+        }
+
+
+        public TaskResponse Update(TaskAddUpdateRequest request)
+        {
+            TaskResponse response = new TaskResponse();
+
+            try
+            {
+                RobotTask task = _robotTaskDal.Table.Where(t => t.RobotTaskId == request.RobotTaskId).FirstOrDefault();
+                task.LocationCode = request.LocationCode;
+                task.Unit = request.Unit;
+                _robotTaskDal.Update(task);
                 int result = _unitOfWork.SaveChanges();
                 if (result < 1)
                 {
@@ -55,16 +89,15 @@ namespace OrderRobot.Service.Concrete
             }
         }
 
-        public BaseResponse Update(OperationAddUpdateRequest request)
+
+        public BaseResponse Delete(int RobotTaskId)
         {
-            TaskResponse response = new TaskResponse();
+            BaseResponse response = new BaseResponse();
 
             try
             {
-                //çalışılıyor,hata aldı, tamamlandı güncellemeleri yapılır.
-                Operation operation = _operationDal.Table.Where(t => t.RobotTaskId == request.RobotTaskId).FirstOrDefault();
-                operation.Status = request.Status;
-                _operationDal.Update(operation);
+                RobotTask task = _robotTaskDal.Table.Where(t => t.RobotTaskId == RobotTaskId).FirstOrDefault();
+                _robotTaskDal.Delete(task);
                 int result = _unitOfWork.SaveChanges();
                 if (result < 1)
                 {
