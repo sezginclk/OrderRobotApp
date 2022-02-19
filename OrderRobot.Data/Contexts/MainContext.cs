@@ -30,6 +30,7 @@ namespace OrderRobot.Data.Contexts
 
         #region  Dbsets
         public virtual DbSet<RobotTask> RobotTasks { get; set; }
+        public virtual DbSet<Operation> Operations { get; set; }
         #endregion
     }
 }
