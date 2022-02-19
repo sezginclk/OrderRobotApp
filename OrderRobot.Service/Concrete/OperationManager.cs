@@ -32,7 +32,7 @@ namespace OrderRobot.Service.Concrete
             try
             {
                 //çalışmaya başlamak için işleme alındığı bilgisi verilir.
-                Operation task = new Operation { RobotTaskId = request.RobotTaskId, Status = Core.Constants.OperationStatus.Initial };
+                Operation task = new Operation { RobotTaskId = request.RobotTaskId, Status = (int)Core.Constants.OperationStatus.Initial };
                 _operationDal.Add(task);
                 int result = _unitOfWork.SaveChanges();
                 if (result < 1)
@@ -63,7 +63,7 @@ namespace OrderRobot.Service.Concrete
             {
                 //çalışılıyor,hata aldı, tamamlandı güncellemeleri yapılır.
                 Operation operation = _operationDal.Table.Where(t => t.RobotTaskId == request.RobotTaskId).FirstOrDefault();
-                operation.Status = request.Status;
+                operation.Status = (int)request.Status;
                 _operationDal.Update(operation);
                 int result = _unitOfWork.SaveChanges();
                 if (result < 1)

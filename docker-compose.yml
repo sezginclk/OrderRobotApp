@@ -1,0 +1,13 @@
+﻿version: "3.9"
+
+services:
+    rabbit1:
+		image: "rabbitmq:3-management"
+		hostname: "rabbit"
+		environment:
+		  RABBITMQ_DEFAULT_USER: "Guest"
+		  RABBITMQ_DEFAULT_PASS: "Guest"
+		  RABBITMQ_DEFAULT_VHOST: "/"
+		ports:
+		  - "15672:15672"
+		  - "5672:5672"

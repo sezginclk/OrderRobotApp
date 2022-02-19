@@ -15,7 +15,7 @@ namespace OrderRobot.Data.Model.DomainClass
 
         public int RobotTaskId { get; set; }
 
-        public OperationStatus Status { get; set; }
+        public int Status { get; set; }
 
     }
 }

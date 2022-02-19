@@ -1,0 +1,5 @@
+﻿{
+	"ConnectionStrings": {
+		"MainConnection": "Server=localhost;Database=OrderRobotDb;User Id=sa;Password=Ergo1234;"
+	}
+}
