@@ -20,32 +20,20 @@ namespace OrderRobot.Operation.Controllers
 
         private readonly ILogger<OperationController> _logger;
         private readonly ICapPublisher _capBus;
-        private readonly IRobotTaskManager _robotTaskManager;
+        private readonly IOperationManager _operationManager;
 
-        public OperationController(ILogger<OperationController> logger, ICapPublisher capBus, IRobotTaskManager robotTaskManager)
+        public OperationController(ILogger<OperationController> logger, ICapPublisher capBus, IOperationManager operationManager)
         {
             _logger = logger;
             _capBus = capBus;
-            _robotTaskManager = robotTaskManager;
+            _operationManager = operationManager;
         }
 
-        [HttpPost("CreateTask")]
-        [SwaggerOperation(Summary = "Task Yaratma İşlemi", Description = "Task Yaratma İşlemi için kullanılır.")]
-        public BaseResponse CreateTask(TaskAddUpdateRequest request)
+        [CapSubscribe("Operation.CreateOperation.StartTask")]
+        public BaseResponse StartTaskOperation(OperationAddUpdateRequest request)
         {
-            //task işlemi db de yaratılıyor.
-            TaskResponse operationReport = _robotTaskManager.Add(request);
-
-            //eğer task sorunsuz yaratıldıysa RabbitMq üzerinden işlemin yapılacağı (robotun çalışacağı servise aktarılıyor)
-            //bu servis çalışmaya başladığı bilgisini veri tabanına girecek , eğer çalışma anında istek gelirse sıraya koyup reddedecek
-            if (operationReport.Code == (int)ERRORCODES.SUCCESS)
-            {
-                _capBus.Publish("PhoneBook.Report.Create.DetailedLocationReport",operationReport);
-
-            }
-
-            //eğer başarısız dönerse error code lar üzerinden dönüş sağlanıyor olacak.
-            return operationReport;
+            BaseResponse response = _operationManager.Add(request);
+            return response;
         }
 
 
