@@ -58,7 +58,7 @@ namespace OrderRobotApp.Controllers
                 _capBus.Publish("Operation.CreateOperation.StartTask", new OperationAddUpdateRequest { RobotTaskId = robotTaskOperation.RobotTaskId });
 
             }
-
+             
             //eğer başarısız dönerse error code lar üzerinden dönüş sağlanıyor olacak.
             return robotTaskOperation;
         }
