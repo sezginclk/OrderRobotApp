@@ -17,7 +17,9 @@ JWT token işlemi dahil edilmiştir. Kullanıcı adı şifre verilerek Authentic
 ise 'docker-compose up -d' kodu kullanılmalıdır.
 
 
-api/Task/Create   ---> Robotun task oluşturması için bu uç kullanılır. (lokasyon bilgisi ve adet verilmeli)
+api/Task/Create   ---> Robotun task oluşturması için bu uç kullanılır. (lokasyon bilgisi ve adet verilmeli) aktif çalışmada değilse ekleyecek
+
+çalışmada ise hata kodları ve bilgi dönecektir.
 
 api/Task/Update   ---> Daha önce eklenmiş task ile ilgili güncelleme işlemi yapılabilir.
 
