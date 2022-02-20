@@ -4,6 +4,10 @@ Siparişlerin Robot Sistemine Aktarımını Sağlayan Servis
 
 Sistemde .Net Core ile yapılmıştır.
 
+OrderRobotApp\OrderRobotApp\bin\Debug\netcoreapp3.1\OrderRobotApp.exe 
+
+OrderRobotApp\OrderRobot.Operation\bin\Debug\netcoreapp3.1\OrderRobot.Operation.exe çalıştırılarak ayağa kaldırılabilir. İki servis ayrı portlarda çalışmaktadır.
+
 2 ayrı servis kullanılmıştır. Bu servislerden biri task oluşturma diğeri task ın işlem durumunu(çalışılıyor, tamamlandı, hata aldı) güncellemek için kullanılır.
 
 Proje içerisinde SQL lite kullanılmıştır. herhangi bir nosql veya sql sistemi dahil edilebilir.Migration yapısı oluşturulmuştur.
