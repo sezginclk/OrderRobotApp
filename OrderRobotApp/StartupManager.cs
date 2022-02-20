@@ -14,6 +14,7 @@ namespace OrderRobotApp
 {
     public static class StartupManager
     {
+
         public static IServiceCollection AddDependencyToService(this IServiceCollection services)
         {
             #region ContainerObject

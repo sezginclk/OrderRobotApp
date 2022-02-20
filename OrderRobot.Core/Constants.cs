@@ -13,7 +13,9 @@ namespace OrderRobot.Core
             SUCCESS = 0,
             SYSTEMERROR = 1,
             TASKFOUND = 2,
-            LOCATIONNOTFOUND = 3
+            LOCATIONNOTFOUND = 3,
+            WORKING=4,
+            READY=5
         }
 
 
@@ -22,7 +24,9 @@ namespace OrderRobot.Core
             {(int)ERRORCODES.SUCCESS,"İşlem Başarılı. " },
             {(int)ERRORCODES.SYSTEMERROR,"Sistemde Hata Oluştu!" },
             {(int)ERRORCODES.TASKFOUND,"Task bulunamadı!" },
-            {(int)ERRORCODES.LOCATIONNOTFOUND,"Lokasyon Bilgisi bulunamadı!" }
+            {(int)ERRORCODES.LOCATIONNOTFOUND,"Lokasyon Bilgisi bulunamadı!" },
+            {(int)ERRORCODES.WORKING,"Aktif durumda görev kabul edemez!" },
+            {(int)ERRORCODES.READY,"Görev kabul edebilir." }
         };
 
 

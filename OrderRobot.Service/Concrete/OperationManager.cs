@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static OrderRobot.Core.Constants;
 
 namespace OrderRobot.Service.Concrete
 {
@@ -55,6 +56,7 @@ namespace OrderRobot.Service.Concrete
             }
         }
 
+
         public BaseResponse Update(OperationAddUpdateRequest request)
         {
             TaskResponse response = new TaskResponse();
@@ -76,6 +78,33 @@ namespace OrderRobot.Service.Concrete
 
                 //response içerisine başarılı kodu ve mesajı aktarılıyor
                 response.SetErrorToResponse(Core.Constants.ERRORCODES.SUCCESS);
+                return response;
+            }
+            catch (Exception)
+            {
+                //response içerisine işlem sırasında hata olduğu kodu ve mesajı aktarılıyor
+                response.SetErrorToResponse(Core.Constants.ERRORCODES.SYSTEMERROR);
+                return response;
+            }
+        }
+
+
+        public BaseResponse CheckOnOperation()
+        {
+            BaseResponse response = new BaseResponse();
+
+            try
+            {
+                var online = _operationDal.Table.Where(t => t.Status == (int)OperationStatus.Working).Count();
+                if (online > 0)
+                {
+                    //response içerisine çalıştığına dair kodu ve mesajı aktarılıyor
+                    response.SetErrorToResponse(Core.Constants.ERRORCODES.WORKING);
+                    return response;
+                }
+
+                //response içerisine görev kabul edebilir kodu ve mesajı aktarılıyor
+                response.SetErrorToResponse(Core.Constants.ERRORCODES.READY);
                 return response;
             }
             catch (Exception)

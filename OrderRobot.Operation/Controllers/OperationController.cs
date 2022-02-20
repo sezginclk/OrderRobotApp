@@ -30,10 +30,16 @@ namespace OrderRobot.Operation.Controllers
         }
 
         [CapSubscribe("Operation.CreateOperation.StartTask")]
-        public BaseResponse StartTaskOperation(OperationAddUpdateRequest request)
+        public void StartTaskOperation(OperationAddUpdateRequest request)
         {
-            BaseResponse response = _operationManager.Add(request);
-            return response;
+            var online = _operationManager.CheckOnOperation();
+
+
+            //aktif çalışmada olup olmadığı kontrol ediliyor. Eğer çalışmada değilse çalışma ekleniyor.
+            if (online.Code == (int)ERRORCODES.READY)
+            {
+                _operationManager.Add(request); 
+            }
         }
 
 

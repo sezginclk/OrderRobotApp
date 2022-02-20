@@ -1,6 +1,8 @@
 ﻿using DotNetCore.CAP;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OrderRobot.Data.Model.DataTransferObjects.Dto;
 using OrderRobot.Data.Model.DataTransferObjects.Request;
 using OrderRobot.Data.Model.DataTransferObjects.Response;
 using OrderRobot.Service.Abstract;
@@ -13,17 +15,32 @@ using static OrderRobot.Core.Constants;
 
 namespace OrderRobotApp.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/Task")]
     public class TaskController : ControllerBase
     {
         private readonly ICapPublisher _capBus;
         private readonly IRobotTaskManager _robotTaskManager;
+        private readonly IJWTAuthenticationManager _authenticationManager;
 
-        public TaskController( ICapPublisher capBus, IRobotTaskManager robotTaskManager)
+        public TaskController(ICapPublisher capBus, IRobotTaskManager robotTaskManager, IJWTAuthenticationManager authenticationManager)
         {
             _capBus = capBus;
             _robotTaskManager = robotTaskManager;
+            _authenticationManager = authenticationManager;
+        }
+
+        [AllowAnonymous]
+        [Route("Authenticate")]
+        [HttpPost]
+        [SwaggerOperation(Summary = "Kimlik doğrulama İşlemi", Description = "TKimlik doğrulama İşlemi için kullanılır.")]
+        public IActionResult Authenticate(UserCred userCred)
+        {
+            var token = _authenticationManager.Authenticate(userCred.username, userCred.password);
+            if (token == null)
+                return Unauthorized();
+            return Ok(token);
         }
 
         [Route("Create")]
@@ -59,10 +76,18 @@ namespace OrderRobotApp.Controllers
         [Route("Delete")]
         [HttpDelete]
         [SwaggerOperation(Summary = "task silme işlemi", Description = "task silme işlemi için kullanılır.")]
-        public BaseResponse Delete(int RobotTaskId)
+        public BaseResponse Delete(TaskAddUpdateRequest request)
         {
-            BaseResponse result = _robotTaskManager.Delete(RobotTaskId);
+            BaseResponse result = _robotTaskManager.Delete(request.RobotTaskId);
             return result;
+        }
+
+        [Route("Get")]
+        [HttpGet]
+        [SwaggerOperation(Summary = "task silme işlemi", Description = "task silme işlemi için kullanılır.")]
+        public string Get()
+        {
+            return "";
         }
 
     }

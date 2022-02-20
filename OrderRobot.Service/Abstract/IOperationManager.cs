@@ -10,5 +10,6 @@ namespace OrderRobot.Service.Abstract
     {
         BaseResponse Add(OperationAddUpdateRequest request);
         BaseResponse Update(OperationAddUpdateRequest request);
+        BaseResponse CheckOnOperation();
     }
 }
