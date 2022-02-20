@@ -9,20 +9,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using static OrderRobot.Core.Constants;
 
 namespace OrderRobot.Service.Concrete
 {
     public class RobotTaskManager : IRobotTaskManager
     {
         readonly IRobotTaskDal _robotTaskDal;
+        readonly IOperationManager _operationManager;
         readonly IUnitOfWork _unitOfWork;
         readonly MainContext _pbookContext;
 
-        public RobotTaskManager(IRobotTaskDal robotTaskDal, IUnitOfWork unitOfWork, MainContext pbookContext)
+        public RobotTaskManager(IRobotTaskDal robotTaskDal, IUnitOfWork unitOfWork, MainContext pbookContext, IOperationManager operationManager)
         {
             _robotTaskDal = robotTaskDal;
             _unitOfWork = unitOfWork;
             _pbookContext = pbookContext;
+            _operationManager = operationManager;
         }
 
 
@@ -30,23 +33,36 @@ namespace OrderRobot.Service.Concrete
         {
             TaskResponse response = new TaskResponse();
 
+
+
             try
             {
-                RobotTask task = new RobotTask { LocationCode = request.LocationCode, Unit = request.Unit };
-                _robotTaskDal.Add(task);
-                int result = _unitOfWork.SaveChanges();
-                if (result < 1)
+                var isInOperation = _operationManager.CheckOnOperation();
+                // eğer robot hareket halinde değil yani görev kabul edebilir durumda ise gerekli mesaj ve kod gönderiliyor.
+                if (isInOperation.Code == (int)ERRORCODES.READY)
                 {
-                    //işlem sırasında hata olursa exceptiona atmayabilir.
-                    response.SetErrorToResponse(Core.Constants.ERRORCODES.SYSTEMERROR);
+                    RobotTask task = new RobotTask { LocationCode = request.LocationCode, Unit = request.Unit };
+                    _robotTaskDal.Add(task);
+                    int result = _unitOfWork.SaveChanges();
+                    if (result < 1)
+                    {
+                        //işlem sırasında hata olursa exceptiona atmayabilir.
+                        response.SetErrorToResponse(Core.Constants.ERRORCODES.SYSTEMERROR);
+                        return response;
+                    }
+                    response.RobotTaskId = task.RobotTaskId;
+
+
+                    //response içerisine başarılı kodu ve mesajı aktarılıyor
+                    response.SetErrorToResponse(Core.Constants.ERRORCODES.SUCCESS);
                     return response;
                 }
-                response.RobotTaskId = task.RobotTaskId;
 
-
-                //response içerisine başarılı kodu ve mesajı aktarılıyor
-                response.SetErrorToResponse(Core.Constants.ERRORCODES.SUCCESS);
+                // eğer robot hareket halinde ise gerekli mesaj ve kod gönderiliyor.
+                //response içerisine çalışıyor kodu ve mesajı aktarılıyor
+                response.SetErrorToResponse(Core.Constants.ERRORCODES.WORKING);
                 return response;
+
             }
             catch (Exception)
             {
