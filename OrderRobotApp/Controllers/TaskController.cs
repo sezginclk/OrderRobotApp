@@ -34,7 +34,7 @@ namespace OrderRobotApp.Controllers
         [AllowAnonymous]
         [Route("Authenticate")]
         [HttpPost]
-        [SwaggerOperation(Summary = "Kimlik doğrulama İşlemi", Description = "TKimlik doğrulama İşlemi için kullanılır.")]
+        [SwaggerOperation(Summary = "Kimlik doğrulama İşlemi", Description = "Kimlik doğrulama İşlemi için kullanılır.")]
         public IActionResult Authenticate(UserCred userCred)
         {
             var token = _authenticationManager.Authenticate(userCred.username, userCred.password);
@@ -82,13 +82,6 @@ namespace OrderRobotApp.Controllers
             return result;
         }
 
-        [Route("Get")]
-        [HttpGet]
-        [SwaggerOperation(Summary = "task silme işlemi", Description = "task silme işlemi için kullanılır.")]
-        public string Get()
-        {
-            return "";
-        }
 
     }
 }
