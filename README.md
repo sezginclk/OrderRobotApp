@@ -2,7 +2,7 @@
 Siparişlerin Robot Sistemine Aktarımını Sağlayan Servis
 
 
-Sistemde .Net Core ile yapılmıştır.
+Sistem .Net Core ile yapılmıştır.
 
 OrderRobotApp\OrderRobotApp\bin\Debug\netcoreapp3.1\OrderRobotApp.exe 
 
